@@ -1,13 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
     let addEntryBtn = document.getElementById("addEntry");
+    let loginForm = document.getElementById("loginForm");
     let entryForm = document.getElementById("entryForm");
+    let loginBtn = document.getElementById("loginBtn");
+    let closeLoginBtn = document.getElementById("closeLogin");
     let closeFormBtn = document.getElementById("closeForm");
     let saveEntryBtn = document.getElementById("saveEntry");
     let codeTable = document.getElementById("codeTable").querySelector("tbody");
 
-    // Open entry form
+    let loggedIn = false;
+
+    // Open login modal on "+" button click
     addEntryBtn.addEventListener("click", function () {
-        entryForm.style.display = "block";
+        if (!loggedIn) {
+            loginForm.style.display = "block";
+        } else {
+            entryForm.style.display = "block";
+        }
+    });
+
+    // Close login form
+    closeLoginBtn.addEventListener("click", function () {
+        loginForm.style.display = "none";
     });
 
     // Close entry form
@@ -15,14 +29,33 @@ document.addEventListener("DOMContentLoaded", function () {
         entryForm.style.display = "none";
     });
 
+    // Validate login credentials
+    loginBtn.addEventListener("click", function () {
+        let email = document.getElementById("loginEmail").value;
+        let password = document.getElementById("loginPassword").value;
+
+        fetch('storage/emails.txt')
+        .then(response => response.text())
+        .then(data => {
+            let lines = data.split("\n");
+            let validUser = lines.some(line => {
+                let [storedEmail, storedPassword] = line.split(";");
+                return storedEmail.trim() === email.trim() && storedPassword.trim() === password.trim();
+            });
+
+            if (validUser) {
+                loggedIn = true;
+                loginForm.style.display = "none";
+                entryForm.style.display = "block";
+            } else {
+                alert("Invalid email or password!");
+            }
+        })
+        .catch(error => console.error("Error loading credentials:", error));
+    });
+
     // Save new entry
     saveEntryBtn.addEventListener("click", function () {
-        let password = document.getElementById("entryPassword").value;
-        if (password !== "tarunKHARE@123@coderepository.in") {
-            alert("Incorrect Password!");
-            return;
-        }
-
         let publisher = document.getElementById("publisher").value;
         let functionName = document.getElementById("functionName").value;
         let description = document.getElementById("description").value;
