@@ -9,12 +9,12 @@
 <body>
     <h1 align="center">Code Repository List</h1>
     <hr>
-    
+
     <label for="search">Search:</label>
     <input type="text" id="search" placeholder="Search Function or Language...">
-    
+
     <button id="addEntry">➕</button>
-    
+
     <table id="codeTable">
         <thead>
             <tr>
@@ -29,23 +29,24 @@
             <!-- Dynamic rows will be added here -->
         </tbody>
     </table>
-    
+
+    <!-- Add Entry Form -->
     <div id="entryForm" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add New Entry</h2>
             <label>Password:</label>
             <input type="password" id="entryPassword">
-            
+
             <label>Publisher:</label>
             <input type="text" id="publisher">
-            
+
             <label>Function/Method:</label>
             <input type="text" id="functionName">
-            
+
             <label>Code Description:</label>
             <input type="text" id="description">
-            
+
             <label>Language:</label>
             <select id="language">
                 <option value="Python">Python</option>
@@ -56,18 +57,19 @@
                 <option value="PHP">PHP</option>
                 <option value="Other">Other</option>
             </select>
-            
+
             <label>Code:</label>
             <textarea id="codeInput" class="code-box"></textarea>
-            
+
             <label>Pre-requisites/Libraries Required:</label>
             <input type="text" id="prerequisites">
-            
+
             <button id="saveEntry">Save</button>
             <button id="closeForm">Close</button>
         </div>
     </div>
-    
+
+    <!-- Code View Modal -->
     <div id="codeModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -77,13 +79,13 @@
             <pre id="codeDisplay" class="code-box"></pre>
         </div>
     </div>
-    
+
     <hr>
     <footer>
         <p>All rights reserved to coderepository.in by Tarun Khare</p>
         <p>Contact us at support@coderepository.in</p>
     </footer>
-    
+
     <script src="static/js/common.js"></script>
 </body>
 </html>
