@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Code Entry</title>
+    <link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Add New Function</h2>
+        <input type="text" id="userName" placeholder="User Name">
+        <input type="text" id="functionName" placeholder="Function Name">
+        <textarea id="functionDescription" placeholder="Function Description"></textarea>
+
+        <label>Select Language:</label>
+        <select id="language">
+            <option value="python">Python</option>
+            <option value="csharp">C#</option>
+            <option value="vba">VBA</option>
+            <option value="excelmacro">Excel Macro</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+            <option value="java">Java</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="javascript">JavaScript</option>
+            <option value="angular">Angular</option>
+        </select>
+
+        <textarea id="code" placeholder="Paste your code here"></textarea>
+        <input type="text" id="dependencies" placeholder="Dependencies (comma-separated)">
+
+        <button onclick="saveEntry()">Save</button>
+    </div>
+
+    <script src="static/js/common.js"></script>
+    <script>
+        function saveEntry() {
+            const user = document.getElementById("userName").value;
+            const name = document.getElementById("functionName").value;
+            const description = document.getElementById("functionDescription").value;
+            const language = document.getElementById("language").value;
+            const code = document.getElementById("code").value;
+            const dependencies = document.getElementById("dependencies").value;
+
+            if (!user || !name || !code) {
+                alert("User, Function Name, and Code are required!");
+                return;
+            }
+
+            const newEntry = { user, name, description, language, code, dependencies };
+            saveCodeEntry(newEntry);
+            alert("Function saved successfully! Please replace `code.json` manually.");
+            window.location = "index.html";
+        }
+    </script>
+</body>
+</html>
