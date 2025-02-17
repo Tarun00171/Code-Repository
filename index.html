@@ -29,14 +29,24 @@
         </tbody>
     </table>
 
+    <!-- Login Form Modal -->
+    <div id="loginForm" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <label>Email:</label>
+            <input type="email" id="loginEmail">
+            <label>Password:</label>
+            <input type="password" id="loginPassword">
+            <button id="loginBtn">Login</button>
+            <button id="closeLogin">Close</button>
+        </div>
+    </div>
+
     <!-- Add Entry Form -->
     <div id="entryForm" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Add New Entry</h2>
-            <label>Password:</label>
-            <input type="password" id="entryPassword">
-
             <label>Publisher:</label>
             <input type="text" id="publisher">
 
@@ -65,17 +75,6 @@
 
             <button id="saveEntry">Save</button>
             <button id="closeForm">Close</button>
-        </div>
-    </div>
-
-    <!-- Code View Modal -->
-    <div id="codeModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Code Preview</h2>
-            <label>Language:</label>
-            <p id="codeLanguage"></p>
-            <pre id="codeDisplay" class="code-box"></pre>
         </div>
     </div>
 
