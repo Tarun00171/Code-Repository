@@ -5,151 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Repository</title>
     <link rel="stylesheet" href="static/css/common.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/dracula.min.css">
 </head>
 <body>
-
-    <div class="container">
-        <h2>Code Repository</h2>
-
-        <!-- Table to Show Code Entries -->
-        <table border="1" width="100%">
-            <thead>
-                <tr>
-                    <th>User Name</th>
-                    <th>Function Name</th>
-                    <th>Language</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="codeTable"></tbody>
-        </table>
-
-        <!-- Button to Open the Add Form -->
-        <button class="add-btn" onclick="openForm()">+</button>
+    <h1 align="center">Code Repository List</h1>
+    <hr>
+    
+    <label for="search">Search:</label>
+    <input type="text" id="search" placeholder="Search Function or Language...">
+    
+    <button id="addEntry">➕</button>
+    
+    <table id="codeTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Function Name</th>
+                <th>Language</th>
+                <th>Action</th>
+                <th>Published By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamic rows will be added here -->
+        </tbody>
+    </table>
+    
+    <div id="entryForm" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Entry</h2>
+            <label>Password:</label>
+            <input type="password" id="entryPassword">
+            
+            <label>Publisher:</label>
+            <input type="text" id="publisher">
+            
+            <label>Function/Method:</label>
+            <input type="text" id="functionName">
+            
+            <label>Code Description:</label>
+            <input type="text" id="description">
+            
+            <label>Language:</label>
+            <select id="language">
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="Java">Java</option>
+                <option value="C++">C++</option>
+                <option value="C#">C#</option>
+                <option value="PHP">PHP</option>
+                <option value="Other">Other</option>
+            </select>
+            
+            <label>Code:</label>
+            <textarea id="codeInput" class="code-box"></textarea>
+            
+            <label>Pre-requisites/Libraries Required:</label>
+            <input type="text" id="prerequisites">
+            
+            <button id="saveEntry">Save</button>
+            <button id="closeForm">Close</button>
+        </div>
     </div>
-
-    <!-- Modal for Code Preview -->
+    
     <div id="codeModal" class="modal">
         <div class="modal-content">
-            <h3>Code Preview</h3>
-            <pre id="codeDisplay"></pre>
-            <button class="close-btn" onclick="closeModal()">Close</button>
+            <span class="close">&times;</span>
+            <h2>Code Preview</h2>
+            <label>Language:</label>
+            <p id="codeLanguage"></p>
+            <pre id="codeDisplay" class="code-box"></pre>
         </div>
     </div>
-
-    <!-- Popup Form for Adding a New Entry (Hidden by Default) -->
-    <div id="formModal" class="modal">
-        <div class="modal-content form-container">
-            <h3>Add New Function</h3>
-
-            <div class="input-group">
-                <input type="text" id="userName" placeholder="User Name">
-                <input type="text" id="functionName" placeholder="Function Name">
-            </div>
-
-            <textarea id="functionDescription" placeholder="Function Description"></textarea>
-
-            <label>Select Language:</label>
-            <select id="language">
-                <option value="python">Python</option>
-                <option value="csharp">C#</option>
-                <option value="vba">VBA</option>
-                <option value="excelmacro">Excel Macro</option>
-                <option value="c">C</option>
-                <option value="cpp">C++</option>
-                <option value="java">Java</option>
-                <option value="html">HTML</option>
-                <option value="css">CSS</option>
-                <option value="javascript">JavaScript</option>
-                <option value="angular">Angular</option>
-            </select>
-
-            <label>Code:</label>
-            <textarea id="code"></textarea>
-
-            <input type="text" id="dependencies" placeholder="Dependencies (comma-separated)">
-
-            <div class="button-group">
-                <button class="save-btn" onclick="saveEntry()">Save</button>
-                <button class="close-btn" onclick="closeForm()">Close</button>
-            </div>
-        </div>
-    </div>
-
+    
+    <hr>
+    <footer>
+        <p>All rights reserved to coderepository.in by Tarun Khare</p>
+        <p>Contact us at support@coderepository.in</p>
+    </footer>
+    
     <script src="static/js/common.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/python/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/clike/clike.min.js"></script>
-
-    <script>
-        let editor;
-
-        function openForm() {
-            document.getElementById("formModal").style.display = "flex";
-
-            if (!editor) {
-                editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-                    mode: "python",
-                    theme: "dracula",
-                    lineNumbers: true,
-                    autoCloseBrackets: true
-                });
-            }
-        }
-
-        function closeForm() {
-            document.getElementById("formModal").style.display = "none";
-        }
-
-        function closeModal() {
-            document.getElementById("codeModal").style.display = "none";
-        }
-
-        function showCode(code) {
-            document.getElementById("codeModal").style.display = "flex";
-            document.getElementById("codeDisplay").innerText = code;
-        }
-
-        function saveEntry() {
-            const user = document.getElementById("userName").value;
-            const name = document.getElementById("functionName").value;
-            const description = document.getElementById("functionDescription").value;
-            const language = document.getElementById("language").value;
-            const code = editor.getValue();
-            const dependencies = document.getElementById("dependencies").value;
-
-            if (!user || !name || !code) {
-                alert("User, Function Name, and Code are required!");
-                return;
-            }
-
-            const newEntry = { user, name, description, language, code, dependencies };
-            saveCodeEntry(newEntry);
-            alert("Function saved! Please replace `code.json` manually.");
-            closeForm();
-            window.location.reload();  // Refresh page to see updates
-        }
-
-        loadCodeEntries((data) => {
-            const table = document.getElementById("codeTable");
-            data.forEach((entry) => {
-                const row = table.insertRow();
-                row.insertCell(0).innerText = entry.user;
-                row.insertCell(1).innerText = entry.name;
-                row.insertCell(2).innerText = entry.language;
-                row.insertCell(3).innerHTML = `<button class='show-btn' onclick='showCode("${entry.code.replace(/"/g, '&quot;')}")'>Show Code</button>`;
-            });
-        });
-
-        document.getElementById("language").addEventListener("change", function () {
-            const lang = this.value;
-            const mode = lang === "javascript" ? "javascript" : lang === "java" ? "text/x-java" : "python";
-            if (editor) editor.setOption("mode", mode);
-        });
-    </script>
-
 </body>
 </html>
