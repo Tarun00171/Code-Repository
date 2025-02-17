@@ -29,19 +29,15 @@ document.addEventListener("DOMContentLoaded", function () {
         entryForm.style.display = "none";
     });
 
-    // Validate login credentials
+    // Validate login credentials from JSON
     loginBtn.addEventListener("click", function () {
-        let email = document.getElementById("loginEmail").value;
-        let password = document.getElementById("loginPassword").value;
+        let email = document.getElementById("loginEmail").value.trim();
+        let password = document.getElementById("loginPassword").value.trim();
 
-        fetch('storage/emails.txt')
-        .then(response => response.text())
-        .then(data => {
-            let lines = data.split("\n");
-            let validUser = lines.some(line => {
-                let [storedEmail, storedPassword] = line.split(";");
-                return storedEmail.trim() === email.trim() && storedPassword.trim() === password.trim();
-            });
+        fetch('storage/emails.json')
+        .then(response => response.json())
+        .then(users => {
+            let validUser = users.some(user => user.email === email && user.password === password);
 
             if (validUser) {
                 loggedIn = true;
