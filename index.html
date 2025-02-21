@@ -5,9 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Repository</title>
     <link rel="stylesheet" href="static/css/common.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css">
 </head>
 <body>
-    <h1 align="center">Code Repository List</h1>
+    <div class="header">
+        <h1 align="center">Code Repository List</h1>
+        <button id="adminPageBtn">Admin</button>
+    </div>
     <hr>
 
     <label for="search">Search:</label>
@@ -25,11 +29,11 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Dynamic rows will be added here -->
+            <!-- Entries will load here dynamically -->
         </tbody>
     </table>
 
-    <!-- Login Form Modal -->
+    <!-- Login Form -->
     <div id="loginForm" class="modal">
         <div class="modal-content">
             <h2>Login</h2>
@@ -45,8 +49,9 @@
     <!-- Add Entry Form -->
     <div id="entryForm" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close" id="closeForm">&times;</span>
             <h2>Add New Entry</h2>
+
             <label>Publisher:</label>
             <input type="text" id="publisher">
 
@@ -74,7 +79,17 @@
             <input type="text" id="prerequisites">
 
             <button id="saveEntry">Save</button>
-            <button id="closeForm">Close</button>
+        </div>
+    </div>
+
+    <!-- Code View Modal -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Code Preview</h2>
+            <label>Language:</label>
+            <p id="codeLanguage"></p>
+            <pre><code id="codeDisplay" class="language-javascript"></code></pre>
         </div>
     </div>
 
@@ -84,6 +99,12 @@
         <p>Contact us at support@coderepository.in</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
     <script src="static/js/common.js"></script>
+    <script>
+        document.getElementById("adminPageBtn").addEventListener("click", function () {
+            window.location.href = "/admin/usercreation";
+        });
+    </script>
 </body>
 </html>

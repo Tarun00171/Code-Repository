@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User Management</title>
+    <link rel="stylesheet" href="/static/css/usercreation.css">
+</head>
+<body>
+    <h1 align="center">Admin - User Management</h1>
+    <hr>
+
+    <div id="adminLogin">
+        <h2>Admin Login</h2>
+        <label>Email:</label>
+        <input type="email" id="adminEmail">
+        <label>Password:</label>
+        <input type="password" id="adminPassword">
+        <button id="adminLoginBtn">Login</button>
+        <p id="adminLoginError" style="color:red;"></p>
+    </div>
+
+    <!-- User Management Table -->
+    <div id="userManagementForm" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2>User Management</h2>
+
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th>Publisher Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>State</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Empty row for new user entry -->
+                    <tr id="newUserRow">
+                        <td><input type="text" id="newPublisherName" placeholder="Enter Publisher Name"></td>
+                        <td><input type="email" id="newUserEmail" placeholder="Enter Email"></td>
+                        <td><input type="password" id="newUserPassword" placeholder="Enter Password"></td>
+                        <td>
+                            <select id="newUserState">
+                                <option value="Active">Active</option>
+                                <option value="Hold">Hold</option>
+                                <option value="Deactivated">Deactivated</option>
+                            </select>
+                        </td>
+                        <td><button id="insertUser">➕ Add</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button id="saveChanges">💾 Save Changes</button>
+            <button id="logoutAdmin">Logout</button>
+            <p id="userSaveMessage" style="color:green;"></p>
+        </div>
+    </div>
+
+    <hr>
+    <footer>
+        <p>All rights reserved to coderepository.in by Tarun Khare</p>
+        <p>Contact us at support@coderepository.in</p>
+    </footer>
+
+    <script src="/static/js/usercreation.js"></script>
+</body>
+</html>

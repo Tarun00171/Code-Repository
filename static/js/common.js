@@ -1,98 +1,79 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let addEntryBtn = document.getElementById("addEntry");
+    let codeTable = document.getElementById("codeTable").querySelector("tbody");
+    let saveEntryBtn = document.getElementById("saveEntry");
     let loginForm = document.getElementById("loginForm");
     let entryForm = document.getElementById("entryForm");
     let loginBtn = document.getElementById("loginBtn");
-    let closeLoginBtn = document.getElementById("closeLogin");
     let closeFormBtn = document.getElementById("closeForm");
-    let saveEntryBtn = document.getElementById("saveEntry");
-    let codeTable = document.getElementById("codeTable").querySelector("tbody");
+    let addEntryBtn = document.getElementById("addEntry");
 
-    let loggedIn = false;
+    let loggedInUserId = null;
 
-    // Open login modal on "+" button click
+    // Open login modal
     addEntryBtn.addEventListener("click", function () {
-        if (!loggedIn) {
-            loginForm.style.display = "block";
-        } else {
-            entryForm.style.display = "block";
-        }
+        loginForm.style.display = "block";
     });
 
-    // Close login form
-    closeLoginBtn.addEventListener("click", function () {
-        loginForm.style.display = "none";
-    });
-
-    // Close entry form
-    closeFormBtn.addEventListener("click", function () {
-        entryForm.style.display = "none";
-    });
-
-    // Validate login credentials from JSON
+    // Handle Login
     loginBtn.addEventListener("click", function () {
-        let email = document.getElementById("loginEmail").value.trim();
-        let password = document.getElementById("loginPassword").value.trim();
+        let email = document.getElementById("loginEmail").value;
+        let password = document.getElementById("loginPassword").value;
 
-        fetch('storage/emails.json')
+        fetch('/api/login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        })
         .then(response => response.json())
-        .then(users => {
-            let validUser = users.some(user => user.email === email && user.password === password);
-
-            if (validUser) {
-                loggedIn = true;
+        .then(data => {
+            if (data.user_id) {
+                loggedInUserId = data.user_id;
                 loginForm.style.display = "none";
                 entryForm.style.display = "block";
             } else {
-                alert("Invalid email or password!");
+                alert("Login failed! " + data.error);
             }
-        })
-        .catch(error => console.error("Error loading credentials:", error));
+        });
     });
 
-    // Save new entry
+    // Save New Code Entry
     saveEntryBtn.addEventListener("click", function () {
-        let publisher = document.getElementById("publisher").value;
         let functionName = document.getElementById("functionName").value;
-        let description = document.getElementById("description").value;
         let language = document.getElementById("language").value;
         let code = document.getElementById("codeInput").value;
         let prerequisites = document.getElementById("prerequisites").value;
 
-        let newId = codeTable.children.length + 1;
-        let row = codeTable.insertRow();
-        row.innerHTML = `
-            <td>${newId}</td>
-            <td>${functionName}</td>
-            <td>${language}</td>
-            <td><button class="showCode">Show Code</button></td>
-            <td>${publisher}</td>
-        `;
-
-        entryForm.style.display = "none";
+        fetch('/api/save_code', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: loggedInUserId, function_name: functionName, language, code, prerequisites })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            entryForm.style.display = "none";
+            loadEntries();
+        });
     });
 
-    // Search Functionality
-    document.getElementById("search").addEventListener("input", function () {
-        let filter = this.value.toLowerCase();
-        let rows = codeTable.getElementsByTagName("tr");
+    // Load Entries in Table
+    function loadEntries() {
+        fetch('/api/get_entries')
+        .then(response => response.json())
+        .then(entries => {
+            codeTable.innerHTML = "";
+            entries.forEach((entry, index) => {
+                let row = codeTable.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry.function_name}</td>
+                    <td>${entry.language}</td>
+                    <td><button class="showCode" data-code="${entry.code}" data-lang="${entry.language}">Show Code</button></td>
+                    <td>${entry.user_id}</td>
+                `;
+            });
+        });
+    }
 
-        for (let row of rows) {
-            let nameCol = row.cells[1]?.innerText.toLowerCase();
-            let langCol = row.cells[2]?.innerText.toLowerCase();
-
-            if (nameCol.includes(filter) || langCol.includes(filter)) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        }
-    });
-
-    // Show Code Modal
-    document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("showCode")) {
-            alert("Feature to view full code will be implemented soon!");
-        }
-    });
+    loadEntries();
 });
